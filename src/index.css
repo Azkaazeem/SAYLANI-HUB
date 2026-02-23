@@ -1,7 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+/* Add this line to enable manual dark mode toggling */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
     --color-primary-green: #66b032;
     --color-primary-blue: #0057a8;
     --color-white: white;
+    --font-sans: "Inter", sans-serif;
+
+/* Ye existing code ke sath neechy add karein */
+    --animate-ken-burns: kenBurns 20s ease-in-out infinite alternate;
+
+    @keyframes kenBurns {
+        0% { transform: scale(1.05); }
+        100% { transform: scale(1.15); }
+    }
+}
+
+body {
+    font-family: var(--font-sans);
 }
