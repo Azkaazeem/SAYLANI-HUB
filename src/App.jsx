@@ -6,6 +6,11 @@ import AuthPage from './pages/AuthPage';
 import PlaceholderPage from './pages/PlaceholderPage';
 import LostFound from './pages/LostFound';
 import Complaints from './pages/Complaints';
+import Volunteer from './pages/Volunteer';
+import MyIdCards from './pages/MyIdCards';
+import Features from './pages/Features';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 function App() {
   const [isDark, setIsDark] = useState(false);
@@ -37,12 +42,13 @@ function App() {
 <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/features" element={<PlaceholderPage title="Features" />} />
+          <Route path="/features" element={<Features />} />
           <Route path="/lost-found" element={<LostFound />} />
           <Route path="/complaints" element={<Complaints />} />
-          <Route path="/volunteer" element={<PlaceholderPage title="Volunteer" />} />
-          <Route path="/about" element={<PlaceholderPage title="About Us" />} />
-          <Route path="/contact" element={<PlaceholderPage title="Contact" />} />
+          <Route path="/volunteer" element={<Volunteer />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/my-id-cards" element={<MyIdCards />} />
         </Routes>
       </div>
     </Router>

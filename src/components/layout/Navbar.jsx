@@ -15,13 +15,13 @@ const Navbar = ({ isDark, toggleTheme }) => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
-// Yahan ab purane aur naye dono links shamil hain
-  const navLinks = [
+const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Features', path: '/features' },
     { name: 'Lost & Found', path: '/lost-found' },
     { name: 'Complaints', path: '/complaints' },
     { name: 'Volunteer', path: '/volunteer' },
+    { name: 'My ID Cards', path: '/my-id-cards' }, // <--- Yeh Naya Link Add Kiya Hai
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
