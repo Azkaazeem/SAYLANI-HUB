@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const SignInForm = ({ onToggleMode, onForgotPassword }) => {
-  // 1. Hook moved inside the component
   const navigate = useNavigate(); 
   
   const [email, setEmail] = useState('');
@@ -39,21 +38,27 @@ const SignInForm = ({ onToggleMode, onForgotPassword }) => {
 
     if (error) {
       Swal.fire({ icon: 'error', title: 'Login Failed', text: error.message, confirmButtonColor: '#0057a8' });
+      setLoading(false);
     } else {
+      // Check if logged in user is Admin
+      const isAdmin = data.user.email === 'admin@gmail.com';
+
       Swal.fire({
         icon: 'success', 
         title: 'Login Successful!', 
-        text: 'Welcome back to your account.',
+        text: isAdmin ? 'Redirecting to Admin Panel...' : 'Welcome back to your account.',
         confirmButtonColor: '#66b032', 
-        timer: 2000, 
+        timer: 1500, 
         showConfirmButton: false
+      }).then(() => {
+        // Swal message khatam hone ke baad redirect karega
+        if (isAdmin) {
+          window.location.href = 'https://saylani-hub-admin-side.vercel.app/';
+        } else {
+          navigate('/'); 
+        }
       });
-      
-      // 2. Fixed the typo here
-      navigate('/'); 
     }
-    
-    setLoading(false);
   };
 
   return (
@@ -64,7 +69,7 @@ const SignInForm = ({ onToggleMode, onForgotPassword }) => {
       <div className="space-y-4 mb-4 mt-2">
         <div>
             <Label htmlFor="loginEmail">Email Address</Label>
-            <Input id="loginEmail" type="email" placeholder="john@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input id="loginEmail" type="email" placeholder="admin@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
             <Label htmlFor="loginPassword">Password</Label>
