@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../components/lib/supabaseClient';
 import Swal from 'sweetalert2';
-import { HeartHandshake, XCircle, Loader2, Image as ImageIcon, QrCode, CreditCard, Edit, CheckCircle, Clock } from 'lucide-react';
+import { HeartHandshake, XCircle, Loader2, Image as ImageIcon, QrCode, CreditCard, Edit, CheckCircle, Clock, MapPin } from 'lucide-react';
 import smitLogo from '../assets/SMIT.png';
 
 const smitBlue = '#014990';
 const smitGreen = '#65A338';
 
-const timings = ["Morning (09:00 AM - 01:00 PM)", "Afternoon (02:00 PM - 06:00 PM)", "Evening (07:00 PM - 10:00 PM)", "Full Day Event"];
 const events = ["Mega Hackathon 2026", "IT Seminar", "Entry Test Management", "Career Counseling Session", "General Campus Duty"];
 
 const CardHeader = () => (
@@ -23,6 +22,7 @@ const CardHeader = () => (
 
 const Volunteer = () => {
   const [applications, setApplications] = useState([]);
+  const [availableSlots, setAvailableSlots] = useState([]); // NAYI STATE: Admin ke slots ke liye
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -43,7 +43,13 @@ const Volunteer = () => {
 
   useEffect(() => {
     fetchData();
+    fetchSlots(); // Page load par slots bhi aayenge
   }, []);
+
+  const fetchSlots = async () => {
+    const { data } = await supabase.from('volunteer_slots').select('*');
+    if (data) setAvailableSlots(data);
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -76,10 +82,6 @@ const Volunteer = () => {
       setApplications(visibleData);
     }
     setLoading(false);
-  };
-
-  const generateIdCardNo = () => {
-    return String(Math.floor(Math.random() * 100000) + 1).padStart(6, '0');
   };
 
   const handleApplyClick = () => {
@@ -116,10 +118,22 @@ const Volunteer = () => {
     }, 300);
   };
 
+  // NAYA FUNCTION: Location select karne par Timing auto-fill karna
+  const handleLocationChange = (e) => {
+    const selectedLoc = e.target.value;
+    const slotDetails = availableSlots.find(slot => slot.location === selectedLoc);
+    
+    setFormData({ 
+      ...formData, 
+      event_location: selectedLoc, 
+      event_timing: slotDetails ? slotDetails.time_slot : '' 
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.full_name || !formData.phone || !formData.roll_no) {
-      Swal.fire({ icon: 'warning', title: 'Missing Fields', text: 'Please fill out all required fields.' });
+    if (!formData.full_name || !formData.phone || !formData.roll_no || !formData.event_location || !formData.event_timing) {
+      Swal.fire({ icon: 'warning', title: 'Missing Fields', text: 'Please fill out all required fields including Location and Timing.' });
       return;
     }
 
@@ -139,7 +153,6 @@ const Volunteer = () => {
       user_id: currentUser.id, full_name: formData.full_name, roll_no: formData.roll_no, phone: formData.phone,
       email: formData.email, profile_image_url: imageUrl, event_name: formData.event_name,
       event_timing: formData.event_timing, event_location: formData.event_location, status: formData.status,
-
       skills: 'General', availability: 'Any', motivation: 'Community Service'
     };
 
@@ -270,26 +283,61 @@ const Volunteer = () => {
                 <input type="file" ref={fileInputRef} onChange={(e) => { if (e.target.files[0]) { setImageFile(e.target.files[0]); setPreviewUrl(URL.createObjectURL(e.target.files[0])); } }} className="hidden" accept="image/*" />
               </div>
 
+              {/* USER INPUT FIELDS */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><label className="text-xs font-bold text-gray-500 mb-1 block">Full Name</label><input type="text" placeholder="Ali Raza" value={formData.full_name} onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
-                <div><label className="text-xs font-bold text-gray-500 mb-1 block">Roll No</label><input type="text" placeholder="e.g. 263541" value={formData.roll_no} onChange={(e) => setFormData({ ...formData, roll_no: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
-                <div><label className="text-xs font-bold text-gray-500 mb-1 block">Mobile No</label><input type="tel" placeholder="0300-1234567" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
-                <div><label className="text-xs font-bold text-gray-500 mb-1 block">Email</label><input type="email" placeholder="ali@gmail.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
+                <div><label className="text-xs font-bold text-gray-500 mb-1 block">Full Name *</label><input type="text" placeholder="Ali Raza" value={formData.full_name} onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
+                <div><label className="text-xs font-bold text-gray-500 mb-1 block">Roll No *</label><input type="text" placeholder="e.g. 263541" value={formData.roll_no} onChange={(e) => setFormData({ ...formData, roll_no: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
+                <div><label className="text-xs font-bold text-gray-500 mb-1 block">Mobile No *</label><input type="tel" placeholder="0300-1234567" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
+                <div><label className="text-xs font-bold text-gray-500 mb-1 block">Email *</label><input type="email" placeholder="ali@gmail.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
               </div>
 
+              {/* NAYA SECTION: Location & Auto Timing */}
+              <div className="bg-blue-50 dark:bg-slate-800/50 p-5 rounded-xl border border-blue-100 dark:border-slate-700">
+                <h3 className="font-bold text-[#014990] dark:text-blue-400 mb-4 flex items-center gap-2"><MapPin size={18}/> Duty Preference</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Location Dropdown */}
+                  <div>
+                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 block">Select Location *</label>
+                    <select 
+                      value={formData.event_location} 
+                      onChange={handleLocationChange} 
+                      disabled={availableSlots.length === 0 || (userRole === 'admin' && selectedApp)} 
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white focus:outline-none focus:border-[#014990] font-bold cursor-pointer disabled:bg-gray-200 disabled:dark:bg-slate-800 disabled:cursor-not-allowed"
+                      required
+                    >
+                      <option value="" disabled>
+                        {availableSlots.length === 0 ? "No Events Currently" : "-- Choose Location --"}
+                      </option>
+                      {availableSlots.map(slot => (
+                        <option key={slot.id} value={slot.location}>{slot.location}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Auto-filled Timing Field */}
+                  <div>
+                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 block">Duty Timing (Auto)</label>
+                    <div className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 font-bold flex items-center gap-2 cursor-not-allowed">
+                      <Clock size={16} /> 
+                      {formData.event_timing ? formData.event_timing : "Select location first..."}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ADMIN CONTROLS (Pehle jaisa hi hai) */}
               {userRole === 'admin' && (
                 <div className="border-t-2 border-dashed border-gray-200 pt-6 mt-6">
                   <h3 className="text-lg font-bold text-[#014990] mb-4 flex items-center gap-2"><CheckCircle size={20} /> Admin Controls</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div><label className="text-xs font-bold text-gray-500 mb-1 block">Status Update</label><select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-4 py-3 rounded-xl border-2 border-[#65A338] bg-green-50 font-bold text-sm focus:outline-none"><option value="Pending">Pending</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select></div>
-                    <div><label className="text-xs font-bold text-gray-500 mb-1 block">Assign Event</label><select value={formData.event_name} onChange={(e) => setFormData({ ...formData, event_name: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#014990]"><option value="">-- Select Event --</option>{events.map(ev => <option key={ev} value={ev}>{ev}</option>)}</select></div>
-                    <div><label className="text-xs font-bold text-gray-500 mb-1 block">Event Timing</label><select value={formData.event_timing} onChange={(e) => setFormData({ ...formData, event_timing: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#014990]"><option value="">-- Select Timing --</option>{timings.map(t => <option key={t} value={t}>{t}</option>)}</select></div>
-                    <div><label className="text-xs font-bold text-gray-500 mb-1 block">Event Location / Campus</label><input type="text" placeholder="e.g. Bahadurabad Campus" value={formData.event_location} onChange={(e) => setFormData({ ...formData, event_location: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#014990]" /></div>
+                    <div><label className="text-xs font-bold text-gray-500 mb-1 block">Assign Event / Duty</label><select value={formData.event_name} onChange={(e) => setFormData({ ...formData, event_name: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#014990]"><option value="">-- Select Event --</option>{events.map(ev => <option key={ev} value={ev}>{ev}</option>)}</select></div>
                   </div>
                 </div>
               )}
 
-              <button type="submit" disabled={submitting} className="w-full bg-[#65A338] hover:bg-[#528f28] text-white font-bold py-4 rounded-xl shadow-md transition-all flex justify-center items-center mt-6 text-lg">
+              <button type="submit" disabled={submitting || availableSlots.length === 0} className="w-full bg-[#65A338] hover:bg-[#528f28] text-white font-bold py-4 rounded-xl shadow-md transition-all flex justify-center items-center mt-6 text-lg disabled:bg-gray-400 disabled:cursor-not-allowed">
                 {submitting ? <Loader2 className="animate-spin" /> : (selectedApp ? 'Save Admin Changes' : 'Submit Volunteer Form')}
               </button>
             </form>
@@ -297,6 +345,7 @@ const Volunteer = () => {
         </div>
       )}
 
+      {/* ID CARD PRINTING WALA HISSA (Bilkul unchanged) */}
       {appToPrint && (
         <div className="hidden print:flex flex-col md:flex-row gap-8 items-center justify-center min-h-screen bg-gray-100 p-4 font-sans absolute top-0 left-0 w-full z-[9999]">
 
