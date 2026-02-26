@@ -7,12 +7,10 @@ export default function ManageComplaints() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('Pending');
 
-  // --- NEW STATE FOR IMAGE MODAL ---
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState(null);
 
   const fetchData = async () => {
-    // Make sure 'image_url' is selected if not select *
     const { data: comps } = await supabase.from('complaints').select('*').order('created_at', { ascending: false });
     if (comps) setData(comps);
   };
@@ -42,7 +40,6 @@ const handleDelete = async (id) => {
     }
   };
 
-  // --- FUNCTIONS TO OPEN/CLOSE IMAGE MODAL ---
   const openImageModal = (url) => {
     setSelectedImageUrl(url);
     setIsImageModalOpen(true);
@@ -55,7 +52,6 @@ const handleDelete = async (id) => {
 
   const filteredData = data.filter(item => {
     const statusMatch = (item.status || 'Pending').toLowerCase() === activeTab.toLowerCase();
-    // Search ab title aur description dono mein karega
     const searchMatch = (item.title || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
                         (item.description || '').toLowerCase().includes(searchTerm.toLowerCase());
     return statusMatch && searchMatch;
@@ -64,7 +60,6 @@ const handleDelete = async (id) => {
   return (
     <div className="space-y-6 relative">
       
-      {/* --- TOP FILTERS & TABS --- */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm">
         <div className="flex space-x-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
           <button onClick={() => setActiveTab('Pending')} className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 whitespace-nowrap ${activeTab === 'Pending' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'}`}><Clock size={16} /> Pending</button>
@@ -77,12 +72,11 @@ const handleDelete = async (id) => {
         </div>
       </div>
 
-      {/* --- TABLE AREA --- */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50 dark:bg-slate-700/50 text-gray-600 dark:text-gray-300 border-b dark:border-slate-700">
-              {/* New Attachment Header */}
+
               <th className="px-6 py-3 text-xs font-semibold uppercase">Attachment</th>
               <th className="px-6 py-3 text-xs font-semibold uppercase">Title / Info</th>
               <th className="px-6 py-3 text-xs font-semibold uppercase">Description</th>
@@ -93,7 +87,6 @@ const handleDelete = async (id) => {
             {filteredData.map((row) => (
               <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-slate-700/50">
                 
-                {/* 👇 NAYA COLUMN: SMALL CIRCLE IMAGE 👇 */}
                 <td className="px-6 py-4 text-sm">
                   {row.image_url ? (
                     <div 
@@ -109,7 +102,6 @@ const handleDelete = async (id) => {
                     </div>
                   )}
                 </td>
-                {/* 👆 YAHAN TAK 👆 */}
 
                 <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                     <div className="font-bold">{row.title || 'No Title'}</div>
@@ -143,17 +135,16 @@ const handleDelete = async (id) => {
         {filteredData.length === 0 && <p className="p-6 text-gray-500 text-center">No records found.</p>}
       </div>
 
-      {/* 👇 FULL IMAGE MODAL (Popup) 👇 */}
       {isImageModalOpen && selectedImageUrl && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity animate-fade-in"
-          onClick={closeImageModal} // Click outside to close
+          onClick={closeImageModal}
         >
           <div 
             className="relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-2xl max-w-4xl max-h-[90vh] flex flex-col"
-            onClick={(e) => e.stopPropagation()} // Click inside won't close
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
+
             <button 
               onClick={closeImageModal}
               className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
@@ -161,7 +152,6 @@ const handleDelete = async (id) => {
               <X size={24} />
             </button>
             
-            {/* Full Image */}
             <div className="p-2 md:p-4 flex-1 overflow-auto flex items-center justify-center bg-gray-100 dark:bg-slate-900">
                <img 
                  src={selectedImageUrl} 
@@ -172,7 +162,6 @@ const handleDelete = async (id) => {
           </div>
         </div>
       )}
-      {/* 👆 YAHAN TAK 👆 */}
 
     </div>
   );

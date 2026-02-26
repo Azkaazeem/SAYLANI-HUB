@@ -26,9 +26,8 @@ const ForgotPasswordForm = ({ onBackToSignIn }) => {
 
     setLoading(true);
 
-    // Send reset password email via Supabase
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin, // Redirects back to your app after they click the link
+      redirectTo: window.location.origin,
     });
 
     if (error) {

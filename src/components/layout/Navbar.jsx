@@ -103,7 +103,6 @@ const navLinks = [
   const navLinkStyle = ({ isActive }) => 
     `transition-all duration-300 font-semibold whitespace-nowrap ${isActive ? 'text-primary-green font-bold drop-shadow-md lg:scale-105' : 'text-gray-600 dark:text-gray-300 hover:text-primary-blue dark:hover:text-white'}`;
 
-  // Check if current user is admin
   const isAdmin = user?.email === 'admin@gmail.com' || profileData?.role === 'admin';
 
   return (
@@ -128,7 +127,6 @@ const navLinks = [
               {user ? (
                 <div className="flex items-center space-x-3">
                   
-                  {/* ADMIN PANEL BUTTON (Desktop) */}
                   {isAdmin && (
                     <a 
                       href="https://saylani-hub-admin-side.vercel.app/" 
@@ -175,7 +173,6 @@ const navLinks = [
           <div className="lg:hidden absolute top-20 left-0 w-full bg-white dark:bg-gray-800 shadow-2xl border-t border-gray-100 dark:border-gray-700 animate-fade-in-up z-40 origin-top">
             <div className="flex flex-col px-6 py-6 space-y-5">
               
-              {/* ADMIN PANEL BUTTON (Mobile) */}
               {isAdmin && (
                 <a 
                   href="https://saylani-hub-admin-side.vercel.app/" 

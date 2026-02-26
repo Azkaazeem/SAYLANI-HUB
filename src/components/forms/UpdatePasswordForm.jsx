@@ -15,7 +15,6 @@ const UpdatePasswordForm = ({ onPasswordUpdated }) => {
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
 
-    // Validations
     if (newPassword.length < 6) {
       Swal.fire({ icon: 'warning', title: 'Weak Password', text: 'Password must be at least 6 characters long.', confirmButtonColor: '#0057a8' });
       return;
@@ -28,7 +27,6 @@ const UpdatePasswordForm = ({ onPasswordUpdated }) => {
 
     setLoading(true);
 
-    // Update the password in Supabase
     const { error } = await supabase.auth.updateUser({
       password: newPassword
     });
@@ -43,9 +41,8 @@ const UpdatePasswordForm = ({ onPasswordUpdated }) => {
         confirmButtonColor: '#66b032' 
       });
       
-      // Sign out the user from the temporary recovery session so they log in normally
       await supabase.auth.signOut();
-      onPasswordUpdated(); // Switch view back to Sign In
+      onPasswordUpdated();
     }
 
     setLoading(false);

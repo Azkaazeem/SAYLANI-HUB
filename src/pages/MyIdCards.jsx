@@ -34,7 +34,6 @@ const fetchMyCards = async () => {
       return;
     }
 
-    // Yahan humne .ilike() use kiya hai jo capital aur small dono match karta hai
     const { data, error } = await supabase
       .from('volunteer_applications')
       .select('*')
@@ -53,7 +52,6 @@ const fetchMyCards = async () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4 animate-page-fade print:bg-white print:py-0">
       <div className="max-w-7xl mx-auto print:m-0">
         
-        {/* Header - Hidden during print */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 print:hidden">
           <div>
             <h1 className="text-3xl font-extrabold text-[#0057a8] dark:text-white">My ID Cards</h1>
@@ -79,18 +77,15 @@ const fetchMyCards = async () => {
             {cards.map(app => (
               <div key={app.id} className="flex flex-col md:flex-row gap-8 justify-center items-center print:flex-row print:justify-center print:gap-8 print:mb-12 print:break-inside-avoid font-sans">
                  
-                 {/* ================= FRONT CARD ================= */}
                  <div className="w-[320px] min-h-[500px] bg-white shadow-xl flex flex-col items-center border border-gray-200 shrink-0 print:shadow-none print:border-2">
                    <CardHeader />
 
-                   {/* Circular Avatar */}
                    <div className="mt-6 relative w-40 h-40 rounded-full p-1 border-4" style={{ borderColor: smitBlue }}>
                      <div className="w-full h-full rounded-full border-4 overflow-hidden bg-blue-50 flex items-center justify-center" style={{ borderColor: smitGreen }}>
                        <img src={app.profile_image_url || 'https://via.placeholder.com/150'} alt="Profile" className="w-full h-full object-cover" />
                      </div>
                    </div>
 
-                   {/* User Info */}
                    <h1 className="text-3xl font-bold mt-4 text-black text-center px-2 uppercase leading-tight line-clamp-1">{app.full_name}</h1>
                    <p className="text-lg text-black mt-1 mb-2 font-semibold">Volunteer</p>
                    
@@ -98,15 +93,12 @@ const fetchMyCards = async () => {
                      <span className="font-bold">Roll No: </span> {app.roll_no}
                    </p>
 
-                   {/* Bottom Green Bar */}
                    <div className="mt-auto h-8 w-full" style={{ backgroundColor: smitGreen }}></div>
                  </div>
 
-                 {/* ================= BACK CARD ================= */}
                  <div className="w-[320px] min-h-[500px] bg-white shadow-xl flex flex-col border border-gray-200 shrink-0 print:shadow-none print:border-2">
                    <CardHeader />
 
-                   {/* Form Fields */}
                    <div className="w-full px-6 mt-6 flex flex-col gap-3 flex-grow">
                      {[
                        { label: 'Name:', value: app.full_name || '-' },
@@ -126,7 +118,6 @@ const fetchMyCards = async () => {
                      ))}
                    </div>
 
-                   {/* QR Code */}
                    <div className="w-full flex justify-center mt-4 mb-6">
                      <img 
                        src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=RollNo:${app.roll_no},Name:${app.full_name},ID:${app.id_card_no}`} 
@@ -135,7 +126,6 @@ const fetchMyCards = async () => {
                      />
                    </div>
 
-                   {/* Bottom Green Bar */}
                    <div className="mt-auto h-8 w-full" style={{ backgroundColor: smitGreen }}></div>
                  </div>
 

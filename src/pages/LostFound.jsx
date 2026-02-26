@@ -111,7 +111,7 @@ const LostFound = () => {
         icon: 'info',
         title: 'Login Required',
         text: 'You need to be logged in to report an item.',
-        confirmButtonColor: '#2563eb' // Blue button
+        confirmButtonColor: '#2563eb'
       });
       return;
     }

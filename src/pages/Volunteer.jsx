@@ -7,7 +7,6 @@ import smitLogo from '../assets/SMIT.png';
 const smitBlue = '#014990';
 const smitGreen = '#65A338';
 
-// Admin ke liye Event Options
 const timings = ["Morning (09:00 AM - 01:00 PM)", "Afternoon (02:00 PM - 06:00 PM)", "Evening (07:00 PM - 10:00 PM)", "Full Day Event"];
 const events = ["Mega Hackathon 2026", "IT Seminar", "Entry Test Management", "Career Counseling Session", "General Campus Duty"];
 
@@ -29,13 +28,11 @@ const Volunteer = () => {
   const [submitting, setSubmitting] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
 
-  // State for Direct Download ID Card
   const [appToPrint, setAppToPrint] = useState(null);
 
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState('guest');
 
-  // Form States (Sirf zaroori fields)
   const [formData, setFormData] = useState({
     full_name: '', roll_no: '', phone: '', email: '',
     event_name: '', event_timing: '', event_location: '', status: 'Pending'
@@ -81,7 +78,6 @@ const Volunteer = () => {
     setLoading(false);
   };
 
-  // Generate unique 6 digit ID No (max 100,000)
   const generateIdCardNo = () => {
     return String(Math.floor(Math.random() * 100000) + 1).padStart(6, '0');
   };
@@ -143,7 +139,7 @@ const Volunteer = () => {
       user_id: currentUser.id, full_name: formData.full_name, roll_no: formData.roll_no, phone: formData.phone,
       email: formData.email, profile_image_url: imageUrl, event_name: formData.event_name,
       event_timing: formData.event_timing, event_location: formData.event_location, status: formData.status,
-      // Default dummy values for old required columns
+
       skills: 'General', availability: 'Any', motivation: 'Community Service'
     };
 
@@ -152,7 +148,6 @@ const Volunteer = () => {
       const { error } = await supabase.from('volunteer_applications').update(payload).eq('id', selectedApp.id);
       dbError = error;
     } else {
-      // UNIQUE NUMBER LOGIC
       let newIdNo;
       const existingIds = applications.map(a => a.id_card_no);
       do {
@@ -183,7 +178,6 @@ const Volunteer = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4 md:px-8 animate-page-fade relative">
 
-      {/* MAIN CONTENT: Hidden during print */}
       <div className="max-w-7xl mx-auto print:hidden">
         <div className="flex flex-col md:flex-row justify-between items-center bg-white dark:bg-gray-800 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-gray-700 mb-8">
           <div>
@@ -260,7 +254,6 @@ const Volunteer = () => {
         )}
       </div>
 
-      {/* FORM MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-fade-in-up print:hidden">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-[2.5rem] shadow-2xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
@@ -268,7 +261,7 @@ const Volunteer = () => {
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{selectedApp ? 'Manage Application' : 'Volunteer Registration Form'}</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Image Upload */}
+
               <div className="flex flex-col items-center mb-6">
                 <div className="w-24 h-24 rounded-full border-4 border-gray-100 dark:border-gray-700 overflow-hidden mb-3 cursor-pointer group relative" onClick={() => fileInputRef.current.click()}>
                   {previewUrl ? <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-50 flex flex-col items-center justify-center text-gray-400"><ImageIcon size={24} /></div>}
@@ -277,7 +270,6 @@ const Volunteer = () => {
                 <input type="file" ref={fileInputRef} onChange={(e) => { if (e.target.files[0]) { setImageFile(e.target.files[0]); setPreviewUrl(URL.createObjectURL(e.target.files[0])); } }} className="hidden" accept="image/*" />
               </div>
 
-              {/* USER INPUTS */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label className="text-xs font-bold text-gray-500 mb-1 block">Full Name</label><input type="text" placeholder="Ali Raza" value={formData.full_name} onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
                 <div><label className="text-xs font-bold text-gray-500 mb-1 block">Roll No</label><input type="text" placeholder="e.g. 263541" value={formData.roll_no} onChange={(e) => setFormData({ ...formData, roll_no: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
@@ -285,7 +277,6 @@ const Volunteer = () => {
                 <div><label className="text-xs font-bold text-gray-500 mb-1 block">Email</label><input type="email" placeholder="ali@gmail.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:bg-gray-900 dark:text-white focus:outline-none focus:border-[#65A338]" required disabled={userRole === 'admin' && selectedApp} /></div>
               </div>
 
-              {/* ADMIN INPUTS */}
               {userRole === 'admin' && (
                 <div className="border-t-2 border-dashed border-gray-200 pt-6 mt-6">
                   <h3 className="text-lg font-bold text-[#014990] mb-4 flex items-center gap-2"><CheckCircle size={20} /> Admin Controls</h3>
@@ -306,11 +297,9 @@ const Volunteer = () => {
         </div>
       )}
 
-      {/* PRINT VIEW ONLY: DITTO COPY DESIGN */}
       {appToPrint && (
         <div className="hidden print:flex flex-col md:flex-row gap-8 items-center justify-center min-h-screen bg-gray-100 p-4 font-sans absolute top-0 left-0 w-full z-[9999]">
 
-          {/* ================= FRONT CARD ================= */}
           <div className="w-[320px] min-h-[500px] bg-white shadow-xl flex flex-col items-center border border-gray-200 shrink-0">
             <CardHeader />
 
@@ -330,7 +319,6 @@ const Volunteer = () => {
             <div className="mt-auto h-8 w-full" style={{ backgroundColor: smitGreen }}></div>
           </div>
 
-          {/* ================= BACK CARD ================= */}
           <div className="w-[320px] min-h-[500px] bg-white shadow-xl flex flex-col border border-gray-200 shrink-0">
             <CardHeader />
 

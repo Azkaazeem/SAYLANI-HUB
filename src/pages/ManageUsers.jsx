@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../components/lib/supabaseClient';
-import Swal from 'sweetalert2'; // 👇 SweetAlert import kar liya
+import Swal from 'sweetalert2';
 import { Trash2, Search, Users, ShieldAlert, UserCheck, XCircle } from 'lucide-react';
 
 export default function ManageUsers() {
@@ -29,7 +29,6 @@ export default function ManageUsers() {
     fetchUsers();
   }, []);
 
-  // 👇 SWEETALERT FOR ROLE CHANGE 👇
   const handleRoleChange = async (id, currentRole) => {
     const newRole = currentRole === 'admin' ? 'user' : 'admin';
     const roleText = newRole === 'admin' ? 'an Admin' : 'a regular User';
@@ -39,7 +38,7 @@ export default function ManageUsers() {
       text: `Are you sure you want to make this person ${roleText}?`,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#0ea5e9', // Blue color
+      confirmButtonColor: '#0ea5e9',
       cancelButtonColor: '#64748b',
       confirmButtonText: 'Yes, change it!'
     });
@@ -55,14 +54,13 @@ export default function ManageUsers() {
     }
   };
 
-  // 👇 SWEETALERT FOR DELETE 👇
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: 'Delete Profile?',
       text: "You won't be able to revert this action!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#ef4444', // Red color
+      confirmButtonColor: '#ef4444',
       cancelButtonColor: '#64748b',
       confirmButtonText: 'Yes, delete it!'
     });
@@ -102,7 +100,6 @@ export default function ManageUsers() {
   return (
     <div className="space-y-6 relative">
       
-      {/* Top Filters & Tabs */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm transition-colors duration-300">
         <div className="flex space-x-2">
           <button onClick={() => setActiveTab('user')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'}`}>
@@ -119,7 +116,6 @@ export default function ManageUsers() {
         </div>
       </div>
 
-      {/* Table Area */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden transition-colors duration-300">
         <div className="overflow-x-auto">
           {loading ? (
@@ -183,7 +179,6 @@ export default function ManageUsers() {
         </div>
       </div>
 
-      {/* Image Modal */}
       {isImageModalOpen && selectedImageUrl && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity animate-fade-in" onClick={closeImageModal}>
           <div className="relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-2xl max-w-4xl max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>

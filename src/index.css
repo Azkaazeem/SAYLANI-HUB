@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-/* Add this line to enable manual dark mode toggling */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -10,7 +9,6 @@
     --color-white: white;
     --font-sans: "Inter", sans-serif;
 
-/* Ye existing code ke sath neechy add karein */
     --animate-ken-burns: kenBurns 20s ease-in-out infinite alternate;
 
     @keyframes kenBurns {
@@ -23,38 +21,29 @@ body {
     font-family: var(--font-sans);
 }
 
-/* =========================================
-   CUSTOM SCROLLBAR STYLING
-========================================= */
-
-/* Scrollbar ki width aur height (Slim look) */
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px; /* Agar horizontal scroll ho tou uske liye */
+  height: 8px;
 }
 
-/* Scrollbar ka Track (Peechay ka raasta) */
 ::-webkit-scrollbar-track {
-  background: #f1f5f9; /* Light grey track */
+  background: #f1f5f9;
   border-radius: 10px;
 }
 
-/* Dark Mode ke liye Track ka color */
 .dark ::-webkit-scrollbar-track {
-  background: #1f2937; /* Dark grey track */
+  background: #1f2937;
 }
 
-/* Scrollbar ka Thumb (Wo hissa jo pakar kar neechay karte hain) */
 ::-webkit-scrollbar-thumb {
-  background: #014990; /* Saylani Blue Solid Color */
+  background: #014990;
   border-radius: 10px;
-  border: 2px solid transparent; /* Kinaro se thora gap dene ke liye */
+  border: 2px solid transparent;
   background-clip: padding-box;
 }
 
-/* Thumb par Hover Effect */
 ::-webkit-scrollbar-thumb:hover {
-  background: #01366b; /* Hover karne par thora dark blue */
+  background: #01366b;
   border: 2px solid transparent;
   background-clip: padding-box;
 }

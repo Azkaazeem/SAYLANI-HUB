@@ -2,7 +2,7 @@ import React from 'react';
 import { TrendingUp } from 'lucide-react';
 
 const StatCard = ({ title, count, icon: Icon, variant }) => {
-  // Theme variants define kar rahe hain
+
   const themes = {
     blue: {
       wrapper: 'bg-gradient-to-br from-[#014990] to-[#01366b]',
@@ -14,7 +14,7 @@ const StatCard = ({ title, count, icon: Icon, variant }) => {
       iconBg: 'bg-white/20',
       textColor: 'text-green-100',
     },
-    orange: { // Complaints ke liye thora different color
+    orange: {
       wrapper: 'bg-gradient-to-br from-orange-500 to-red-500',
       iconBg: 'bg-white/20',
       textColor: 'text-orange-100',
@@ -26,7 +26,6 @@ const StatCard = ({ title, count, icon: Icon, variant }) => {
   return (
     <div className={`${theme.wrapper} p-6 rounded-[2rem] shadow-xl relative overflow-hidden group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2`}>
       
-      {/* Background Decoration Circle */}
       <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all"></div>
       
       <div className="relative z-10 flex justify-between items-start">
@@ -44,7 +43,6 @@ const StatCard = ({ title, count, icon: Icon, variant }) => {
         </div>
       </div>
 
-      {/* Fake Trend Indicator (Just for looks) */}
       <div className={`mt-4 inline-flex items-center gap-1 text-xs font-semibold ${theme.textColor} bg-white/10 px-3 py-1 rounded-full`}>
         <TrendingUp size={14} /> 
         <span>Active Now</span>

@@ -20,10 +20,9 @@ export const LiveUsersGraph = () => {
   const [liveUsers, setLiveUsers] = useState(0);
 
   useEffect(() => {
-    // Attempting to fetch from a visits table to simulate live users
     const fetchLiveUsers = async () => {
       const { count } = await supabase.from('website_visits').select('*', { count: 'exact', head: true });
-      setLiveUsers(count || 0); // Strictly 0 if no data
+      setLiveUsers(count || 0);
     };
     fetchLiveUsers();
   }, []);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Home, Users, ShieldAlert, AlertTriangle, MessageSquare, 
-  Search, CalendarDays, LogOut, HeartHandshake // Yahan CalendarDays add kiya hai
+  Search, CalendarDays, LogOut, HeartHandshake, X
 } from 'lucide-react';
 import smitLogo from '../../assets/SMIT.png';
 
@@ -19,29 +19,39 @@ const NavItem = ({ icon, label, isActive, onClick }) => (
   </button>
 );
 
-export default function Sidebar({ currentView, setCurrentView, onLogout }) {
+export default function Sidebar({ currentView, setCurrentView, onLogout, closeSidebar }) {
+  
+  const handleNavClick = (viewName) => {
+    setCurrentView(viewName);
+    if (closeSidebar) closeSidebar();
+  };
+
   return (
-    <div className="h-full bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-slate-800 flex flex-col transition-colors duration-300">
+    <div className="h-full w-64 bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-slate-800 flex flex-col transition-colors duration-300 relative">
       
-      {/* Logo Area */}
-      <div className="p-6 flex flex-col items-center border-b border-gray-100 dark:border-slate-800">
+      <button 
+        onClick={closeSidebar} 
+        className="md:hidden absolute top-4 right-4 text-gray-500 hover:text-red-500 dark:text-gray-400 transition-colors bg-gray-100 dark:bg-slate-800 p-2 rounded-full"
+      >
+        <X size={20} />
+      </button>
+
+      <div className="p-6 flex flex-col items-center border-b border-gray-100 dark:border-slate-800 mt-4 md:mt-0">
         <img src={smitLogo} alt="SMIT Logo" className="h-16 object-contain mb-3" />
         <h2 className="text-xl font-extrabold text-[#014990] dark:text-white">Saylani Hub</h2>
         <p className="text-xs font-medium text-[#65A338] tracking-widest uppercase mt-1">Admin Panel</p>
       </div>
 
-      {/* Navigation Links */}
       <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
-        <NavItem icon={<Home size={20} />} label="Dashboard" isActive={currentView === 'dashboard'} onClick={() => setCurrentView('dashboard')} />
-        <NavItem icon={<Users size={20} />} label="Manage Users" isActive={currentView === 'users'} onClick={() => setCurrentView('users')} />
-        <NavItem icon={<AlertTriangle size={20} />} label="Complaints" isActive={currentView === 'complaints'} onClick={() => setCurrentView('complaints')} />
-        <NavItem icon={<HeartHandshake size={20} />} label="Volunteers" isActive={currentView === 'volunteers'} onClick={() => setCurrentView('volunteers')} />
-        <NavItem icon={<CalendarDays size={20} />} label="Duty Roster" isActive={currentView === 'schedule'} onClick={() => setCurrentView('schedule')} />
-        <NavItem icon={<Search size={20} />} label="Lost & Found" isActive={currentView === 'lostfound'} onClick={() => setCurrentView('lostfound')} />
-        <NavItem icon={<MessageSquare size={20} />} label="Messages" isActive={currentView === 'contacts'} onClick={() => setCurrentView('contacts')} />
+        <NavItem icon={<Home size={20} />} label="Dashboard" isActive={currentView === 'dashboard'} onClick={() => handleNavClick('dashboard')} />
+        <NavItem icon={<Users size={20} />} label="Manage Users" isActive={currentView === 'users'} onClick={() => handleNavClick('users')} />
+        <NavItem icon={<AlertTriangle size={20} />} label="Complaints" isActive={currentView === 'complaints'} onClick={() => handleNavClick('complaints')} />
+        <NavItem icon={<HeartHandshake size={20} />} label="Volunteers" isActive={currentView === 'volunteers'} onClick={() => handleNavClick('volunteers')} />
+        <NavItem icon={<CalendarDays size={20} />} label="Duty Roster" isActive={currentView === 'schedule'} onClick={() => handleNavClick('schedule')} />
+        <NavItem icon={<Search size={20} />} label="Lost & Found" isActive={currentView === 'lostfound'} onClick={() => handleNavClick('lostfound')} />
+        <NavItem icon={<MessageSquare size={20} />} label="Messages" isActive={currentView === 'contacts'} onClick={() => handleNavClick('contacts')} />
       </div>
 
-      {/* Logout Button */}
       <div className="p-4 border-t border-gray-100 dark:border-slate-800">
         <button 
           onClick={onLogout}

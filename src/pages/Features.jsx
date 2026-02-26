@@ -86,7 +86,6 @@ const Features = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 md:px-8 animate-page-fade">
       <div className="max-w-7xl mx-auto">
         
-        {/* Header Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
             Discover <span style={{ color: smitBlue }}>Saylani</span> <span style={{ color: smitGreen }}>Hub</span>
@@ -96,7 +95,6 @@ const Features = () => {
           </p>
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {featuresList.map((feature, index) => {
             const IconComponent = feature.icon;
@@ -109,14 +107,12 @@ const Features = () => {
                 className={`relative bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 
                   ${isComingSoon ? 'opacity-70 cursor-not-allowed' : 'hover:-translate-y-2 hover:shadow-xl group'}`}
               >
-                {/* Status Badge */}
                 {isComingSoon && (
                   <div className="absolute top-4 right-4 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
                     Coming Soon
                   </div>
                 )}
 
-                {/* Icon Container */}
                 <div 
                   className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 ${!isComingSoon && 'group-hover:scale-110'}`}
                   style={{ 
@@ -127,13 +123,11 @@ const Features = () => {
                   <IconComponent size={28} />
                 </div>
 
-                {/* Content */}
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
                   {feature.description}
                 </p>
 
-                {/* Arrow Icon for active items */}
                 {!isComingSoon && (
                   <div className="mt-5 flex items-center text-sm font-bold" style={{ color: feature.color === 'blue' ? smitBlue : smitGreen }}>
                     Explore <span className="ml-1 transition-transform duration-300 group-hover:translate-x-1">→</span>

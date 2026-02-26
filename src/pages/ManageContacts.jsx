@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../components/lib/supabaseClient';
-import { Trash2, Search, Reply, Eye, X } from 'lucide-react'; // Eye aur X icons add kiye hain
+import { Trash2, Search, Reply, Eye, X } from 'lucide-react';
 
 export default function ManageContacts() {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   
-  // --- NEW STATE FOR MESSAGE MODAL ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
 
@@ -35,7 +34,6 @@ export default function ManageContacts() {
     }
   };
 
-  // --- FUNCTIONS TO OPEN/CLOSE MODAL ---
   const openMessageModal = (messageObj) => {
     setSelectedMessage(messageObj);
     setIsModalOpen(true);
@@ -76,12 +74,10 @@ export default function ManageContacts() {
                   <div className="text-xs text-blue-500">{row.email}</div>
                 </td>
                 
-                {/* Message truncate (chota) ho kar aayega */}
                 <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">{row.message}</td>
                 
                 <td className="px-6 py-4 text-sm text-right flex justify-end items-center space-x-2">
                   
-                  {/* VIEW FULL MESSAGE BUTTON */}
                   <button onClick={() => openMessageModal(row)} className="text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 p-2 rounded-lg transition-colors" title="View Full Message">
                     <Eye size={18} />
                   </button>
@@ -101,7 +97,6 @@ export default function ManageContacts() {
         {filteredData.length === 0 && <p className="p-6 text-gray-500 text-center">No messages found.</p>}
       </div>
 
-      {/* 👇 FULL MESSAGE MODAL (Popup) 👇 */}
       {isModalOpen && selectedMessage && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in" 
@@ -136,7 +131,6 @@ export default function ManageContacts() {
           </div>
         </div>
       )}
-      {/* 👆 YAHAN TAK 👆 */}
 
     </div>
   );

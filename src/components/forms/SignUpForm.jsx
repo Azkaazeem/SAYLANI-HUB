@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = ({ onToggleMode }) => {
-  // 1. Hook moved inside the component
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -25,7 +24,6 @@ const SignUpForm = ({ onToggleMode }) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  // Immediate Image Upload Logic
   const handleImmediateUpload = async (file) => {
       const fileExt = file.name.split('.').pop();
       const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
@@ -60,11 +58,9 @@ const SignUpForm = ({ onToggleMode }) => {
       });
   };
   
-  // Sign Up and Database Insert Logic
   const handleSignUp = async (e) => {
       e.preventDefault();
 
-      // Form Validation using SweetAlert
       if (!uploadedImageUrl) {
         Swal.fire({ icon: 'warning', title: 'Missing Profile Picture', text: 'Please upload a profile picture before signing up.', confirmButtonColor: '#0057a8' });
         return;
@@ -138,7 +134,6 @@ const SignUpForm = ({ onToggleMode }) => {
         setFormData({ fullName: '', email: '', phone: '', dob: '', address: '', password: '' });
         setUploadedImageUrl(null);
         
-        // 2. Redirect user to the home page after successful sign up
         navigate('/');
       }
       

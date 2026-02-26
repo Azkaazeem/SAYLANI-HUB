@@ -43,13 +43,12 @@ const Complaints = () => {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    fetchData(); // Dono cheezein ek sath fetch karengy taa ke privacy theek se apply ho
+    fetchData();
   }, []);
 
   const fetchData = async () => {
     setLoading(true);
 
-    // 1. Pehly User ki details nikalen
     const { data: { user } } = await supabase.auth.getUser();
     let currentRole = 'guest';
 
@@ -68,7 +67,6 @@ const Complaints = () => {
       setUserRole('guest');
     }
 
-    // 2. Phir saari complaints database se layein
     const { data: itemsData, error: itemsError } = await supabase
       .from('complaints')
       .select('*')
@@ -80,13 +78,12 @@ const Complaints = () => {
       return;
     }
 
-    // 3. Privacy Filter Lagayen (Yahan tay hoga kisko kya dikhana hai)
     if (itemsData && itemsData.length > 0) {
       const activeItems = itemsData.filter(item => {
-        if (item.is_deleted) return false; // Deleted hata do
-        if (currentRole === 'admin') return true; // Admin ko sab dikhao
-        if (user && item.user_id === user.id) return true; // User ko sirf uski apni complaint dikhao
-        return false; // Dusron ki chhupa do
+        if (item.is_deleted) return false;
+        if (currentRole === 'admin') return true;
+        if (user && item.user_id === user.id) return true;
+        return false;
       });
 
       if (activeItems.length === 0) {
@@ -95,7 +92,6 @@ const Complaints = () => {
         return;
       }
 
-      // Profiles fetch logic
       const userIds = [...new Set(activeItems.map(item => item.user_id))];
       const { data: profilesData } = await supabase.from('smit_hub_profiles').select('id, full_name, profile_image_url').in('id', userIds);
 
@@ -149,7 +145,7 @@ const Complaints = () => {
       const { error } = await supabase.from('complaints').update({ is_deleted: true }).eq('id', id);
       if (!error) {
         Swal.fire('Removed!', 'Complaint has been removed.', 'success');
-        fetchData(); // Refresh Data
+        fetchData();
       }
     }
   };
@@ -161,25 +157,21 @@ const handleSubmit = async (e) => {
     }
 
     setUploading(true);
-    let imageUrl = null; // Start mein null rakhein, previewUrl nahi
+    let imageUrl = null;
 
-    // Agar user ne tasveer attach ki hai
     if (imageFile) {
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
       const { error: uploadError } = await supabase.storage.from('smit-hub-images').upload(`complaints/${fileName}`, imageFile);
       
-      // Agar upload fail ho jaye toh user ko batayen aur aage save na karein
       if (uploadError) {
         setUploading(false);
         Swal.fire({ icon: 'error', title: 'Image Upload Failed', text: 'Storage bucket might be missing. Details: ' + uploadError.message });
         return; 
       }
       
-      // Agar upload successful ho jaye toh uska permanent link le lein
       const { data } = supabase.storage.from('smit-hub-images').getPublicUrl(`complaints/${fileName}`);
       imageUrl = data.publicUrl;
     } else if (editId && previewUrl && !previewUrl.startsWith('blob:')) {
-      // Agar update kar rahay hain aur purani tasveer already majood hai
       imageUrl = previewUrl;
     }
 
@@ -204,7 +196,7 @@ const handleSubmit = async (e) => {
     } else {
       Swal.fire({ icon: 'success', title: editId ? 'Updated Successfully!' : 'Complaint Submitted!', showConfirmButton: false, timer: 1500 });
       setIsModalOpen(false);
-      fetchData(); // Refresh Data
+      fetchData();
     }
   };
   const getStatusColor = (status) => {
@@ -237,7 +229,6 @@ const handleSubmit = async (e) => {
           </button>
         </div>
 
-        {/* Filters will only show properly if user is logged in, but let's keep them visible */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
           <div className="flex gap-2 sm:gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
             {['All', 'Pending', 'In Progress', 'Resolved'].map(f => (

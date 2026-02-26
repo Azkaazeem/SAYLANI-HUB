@@ -26,7 +26,7 @@ export default function DataTable({ tableName, title }) {
 
     const { error } = await supabase.from(tableName).delete().eq('id', id);
     if (!error) {
-      fetchData(); // Refresh data after deletion
+      fetchData();
     } else {
       alert("Error deleting record.");
     }

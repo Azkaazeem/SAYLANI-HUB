@@ -17,7 +17,6 @@ const SignInForm = ({ onToggleMode, onForgotPassword }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Yeh wo main function hai jiske andar saara logic hona chahiye
   const handleSignIn = async (e) => {
     e.preventDefault();
 
@@ -32,7 +31,6 @@ const SignInForm = ({ onToggleMode, onForgotPassword }) => {
 
     setLoading(true);
 
-    // 1. Supabase mein login attempt
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -42,18 +40,15 @@ const SignInForm = ({ onToggleMode, onForgotPassword }) => {
       Swal.fire({ icon: 'error', title: 'Login Failed', text: error.message, confirmButtonColor: '#0057a8' });
       setLoading(false);
     } else {
-      // 2. Profile se role check karna
       const { data: profileData } = await supabase
-        .from('smit_hub_profiles') // Agar aapki table ka naam alag hai to yahan change karein
+        .from('smit_hub_profiles')
         .select('role')
         .eq('id', data.user.id)
         .single();
 
-      // 3. Admin verify karna (Database role ya hardcoded email se)
       const isAdmin = (profileData && profileData.role === 'admin') || data.user.email === 'admin@gmail.com';
 
       if (isAdmin) {
-        // Admin ke liye success popup aur seedha /admin par redirect
         Swal.fire({
           icon: 'success', 
           title: 'Admin Login', 
@@ -65,7 +60,6 @@ const SignInForm = ({ onToggleMode, onForgotPassword }) => {
           navigate('/admin'); 
         });
       } else {
-        // Normal user ke liye success popup aur Home (/) par redirect
         Swal.fire({
           icon: 'success', 
           title: 'Login Successful!', 

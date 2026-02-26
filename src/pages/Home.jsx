@@ -1,17 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Search, AlertCircle, HeartHandshake, ArrowRight, ChevronDown } from 'lucide-react';
-// import hero from '../assets/hero.jpg'
 
 const FeatureCard = ({ title, description, linkTo, icon: Icon, colorTheme, delay }) => (
   <div 
     className="group relative bg-white dark:bg-gray-800 p-8 md:p-10 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 overflow-hidden border border-gray-50 dark:border-gray-700/50 flex flex-col h-full"
     style={{ animationDelay: delay }}
   >
-    {/* Decorative background circle on hover */}
     <div className={`absolute -top-10 -right-10 w-40 h-40 opacity-10 rounded-full transition-transform duration-700 ease-out group-hover:scale-[2.5] ${colorTheme.bg}`}></div>
     
-    {/* Cute Icon Container */}
     <div className={`w-16 h-16 rounded-2xl mb-8 flex items-center justify-center shadow-sm ${colorTheme.bg} ${colorTheme.text} transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-300`}>
       <Icon size={32} strokeWidth={2.5} />
     </div>
@@ -35,20 +32,16 @@ const Home = () => {
   return (
     <div className="animate-page-fade bg-gray-50 dark:bg-gray-900 min-h-screen">
       
-      {/* 1. HERO SECTION (100vh) */}
       <div className="relative h-screen flex items-center justify-center overflow-hidden">
    
         
-{/* Background Image (Massive IT Classroom Vibe) */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-fixed animate-ken-burns"
           style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop')" }}
         ></div>
         
-        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary-blue/90 via-primary-blue/70 to-primary-green/80 dark:from-gray-900/95 dark:to-gray-800/90 mix-blend-multiply"></div>
 
-        {/* Center Content (Beautiful Glassmorphism Card) */}
         <div className="relative z-10 text-center px-6 max-w-5xl animate-fade-in-up flex flex-col items-center mt-[-64px]">
           
           <div className="bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 p-8 md:p-14 rounded-[3rem] shadow-2xl">
@@ -70,17 +63,14 @@ const Home = () => {
 
         </div>
         
-        {/* Bouncy Scroll Indicator */}
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce flex flex-col items-center text-white/80 cursor-pointer">
             <span className="text-xs font-bold tracking-widest uppercase mb-2 opacity-80">Scroll</span>
             <ChevronDown size={28} />
         </div>
       </div>
 
-      {/* 2. CUTE FEATURE CARDS SECTION */}
       <div className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         
-        {/* Decorative Glowing Blobs Behind Cards */}
         <div className="absolute top-0 left-0 w-72 h-72 bg-primary-blue/10 dark:bg-primary-blue/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-green/10 dark:bg-primary-green/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
 
@@ -95,7 +85,6 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
             <FeatureCard 
               title="Lost & Found" 
@@ -138,7 +127,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 3. MODERN FOOTER */}
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 py-10 transition-colors duration-300 relative z-10 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
             <div className="mb-6 md:mb-0">

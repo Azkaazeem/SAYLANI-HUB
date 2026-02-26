@@ -12,13 +12,12 @@ export default function MainDashboard() {
 
   useEffect(() => {
     const fetchRealData = async () => {
-      // Safely fetch counts. If table doesn't exist yet, it returns error but we fallback to 0.
       const getCount = async (table) => {
         const { count } = await supabase.from(table).select('*', { count: 'exact', head: true });
         return count || 0;
       };
 
-      const usersCount = await getCount('smit_hub_profiles'); // assuming your users table is 'profiles' or 'users'
+      const usersCount = await getCount('smit_hub_profiles');
       const volCount = await getCount('volunteer_applications');
       const contactCount = await getCount('contact_messages');
       const compCount = await getCount('complaints');
@@ -33,7 +32,6 @@ export default function MainDashboard() {
     fetchRealData();
   }, []);
 
-  // Calculate percentage dynamically based on a max goal (e.g., goal is 1000). If 0, percentage is 0.
   const calcPercent = (val, max = 1000) => val === 0 ? 0 : Math.min(Math.round((val / max) * 100), 100);
 
   return (
@@ -50,7 +48,6 @@ export default function MainDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <LiveUsersGraph />
         
-        {/* Actions panel dynamically responding */}
         <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm transition-colors duration-300">
            <h3 className="font-semibold text-gray-800 dark:text-white mb-4">Pending Tasks</h3>
            <div className="space-y-4">

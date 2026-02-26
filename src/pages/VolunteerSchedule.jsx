@@ -11,7 +11,6 @@ export default function VolunteerSchedule() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   
-  // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVol, setSelectedVol] = useState(null);
   const [formData, setFormData] = useState({ event_name: '', event_timing: '', event_location: '' });
@@ -19,7 +18,6 @@ export default function VolunteerSchedule() {
 
   const fetchData = async () => {
     setLoading(true);
-    // Sirf 'Approved' volunteers fetch karega kyunke pending ko duty nahi milti
     const { data: vols, error } = await supabase
       .from('volunteer_applications')
       .select('*')
@@ -62,7 +60,7 @@ export default function VolunteerSchedule() {
     } else {
       Swal.fire({ icon: 'success', title: 'Duty Assigned!', text: 'Volunteer schedule updated successfully.', showConfirmButton: false, timer: 1500 });
       setIsModalOpen(false);
-      fetchData(); // Refresh list
+      fetchData();
     }
   };
 
@@ -75,7 +73,6 @@ export default function VolunteerSchedule() {
   return (
     <div className="space-y-6 relative">
       
-      {/* Header & Search */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm transition-colors duration-300">
         <div>
           <h2 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
@@ -96,7 +93,6 @@ export default function VolunteerSchedule() {
         </div>
       </div>
 
-      {/* Data Table */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden transition-colors duration-300">
         <div className="overflow-x-auto">
           {loading ? (
@@ -117,7 +113,6 @@ export default function VolunteerSchedule() {
                 {filteredData.map((row) => (
                   <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
                     
-                    {/* User Info */}
                     <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                       <div className="flex items-center gap-3">
                         <img src={row.profile_image_url || 'https://via.placeholder.com/40'} alt="Avatar" className="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-gray-600" />
@@ -128,7 +123,6 @@ export default function VolunteerSchedule() {
                       </div>
                     </td>
 
-                    {/* Event Name */}
                     <td className="px-6 py-4 text-sm">
                       {row.event_name ? (
                         <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
@@ -139,7 +133,6 @@ export default function VolunteerSchedule() {
                       )}
                     </td>
 
-                    {/* Timing & Location */}
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 space-y-1">
                       <div className="flex items-center gap-1.5" title="Timing">
                         <Clock size={14} className={row.event_timing ? "text-orange-500" : "text-gray-400"} /> 
@@ -151,7 +144,6 @@ export default function VolunteerSchedule() {
                       </div>
                     </td>
 
-                    {/* Action Button */}
                     <td className="px-6 py-4 text-sm text-right h-full pt-6">
                       <button 
                         onClick={() => openEditModal(row)} 
@@ -169,7 +161,6 @@ export default function VolunteerSchedule() {
         </div>
       </div>
 
-      {/* ASSIGN DUTY MODAL */}
       {isModalOpen && selectedVol && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={() => setIsModalOpen(false)}>
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md p-6 md:p-8 relative" onClick={(e) => e.stopPropagation()}>

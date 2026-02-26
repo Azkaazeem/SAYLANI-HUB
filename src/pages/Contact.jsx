@@ -47,7 +47,6 @@ const Contact = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 md:px-8 animate-page-fade font-sans">
       <div className="max-w-7xl mx-auto">
         
-        {/* Header Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
             Get in <span style={{ color: smitBlue }}>Touch</span>
@@ -59,10 +58,8 @@ const Contact = () => {
 
         <div className="flex flex-col lg:flex-row gap-10">
           
-          {/* ================= LEFT SIDE: CONTACT INFO ================= */}
           <div className="w-full lg:w-1/3 flex flex-col gap-6">
             
-            {/* Info Card 1: Address */}
             <div className="bg-white dark:bg-gray-800 p-8 rounded-[2rem] shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style={{ backgroundColor: `${smitBlue}15`, color: smitBlue }}>
                 <MapPin size={28} />
@@ -74,14 +71,12 @@ const Contact = () => {
               </p>
             </div>
 
-            {/* Info Card 2: Contact Details (DIVIDED INTO TWO PARTS) */}
             <div className="bg-white dark:bg-gray-800 p-8 rounded-[2rem] shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style={{ backgroundColor: `${smitGreen}15`, color: smitGreen }}>
                 <Phone size={28} />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Contact Details</h3>
               
-              {/* Saylani Office Contact */}
               <div className="mb-5 border-b border-gray-100 dark:border-gray-700 pb-5">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Saylani Head Office</p>
                 <div className="flex items-center gap-3 mb-2 text-gray-600 dark:text-gray-400">
@@ -94,24 +89,20 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Developer Contact */}
               <div>
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Technical Support / Developer</p>
                 <div className="flex items-center gap-3 mb-2 text-gray-600 dark:text-gray-400">
                   <Phone size={16} style={{ color: smitBlue }} />
-                  {/* YAHAN APNA NUMBER LIKHEIN */}
                   <span className="text-sm font-medium">+92 3161132149</span> 
                 </div>
                 <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                   <Mail size={16} style={{ color: smitBlue }} />
-                  {/* YAHAN APNI EMAIL LIKHEIN */}
                   <span className="text-sm font-medium">azkaazeem804@gmail.com</span> 
                 </div>
               </div>
 
             </div>
 
-            {/* Info Card 3: Timings */}
             <div className="bg-white dark:bg-gray-800 p-8 rounded-[2rem] shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 bg-yellow-50 text-yellow-600">
                 <Clock size={28} />
@@ -125,7 +116,6 @@ const Contact = () => {
 
           </div>
 
-          {/* ================= RIGHT SIDE: CONTACT FORM ================= */}
           <div className="w-full lg:w-2/3 bg-white dark:bg-gray-800 p-8 md:p-12 rounded-[2.5rem] shadow-lg border border-gray-100 dark:border-gray-700 relative overflow-hidden">
             
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 dark:bg-blue-900/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
