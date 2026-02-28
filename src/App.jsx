@@ -12,6 +12,7 @@ import MyIdCards from './pages/MyIdCards';
 import Features from './pages/Features';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 import DashboardLayout from './pages/DashboardLayout';
 
@@ -57,6 +58,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/my-id-cards" element={<MyIdCards />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
 
         <Route path="/admin" element={<DashboardLayout isDark={isDark} toggleTheme={toggleTheme} />} />
