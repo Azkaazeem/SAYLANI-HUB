@@ -123,6 +123,7 @@ function App() {
           path="/admin" 
           element={
             <AdminProtectedRoute>
+              {<NotFound/>}
               <DashboardLayout isDark={isDark} toggleTheme={toggleTheme} />
             </AdminProtectedRoute>
           } 
